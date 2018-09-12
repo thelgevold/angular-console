@@ -25,6 +25,11 @@ import { onError } from 'apollo-link-error';
 
 import { AppComponent } from './app.component';
 
+import {
+  TicketModule,
+  SupportComponent
+} from '@nrwl/angular-console-enterprise-frontend';
+
 export function initApollo(
   analytics: AnalyticsCollector,
   messenger: Messenger,
@@ -71,6 +76,7 @@ export function initApollo(
     ApolloModule,
     HttpLinkModule,
     HttpClientModule,
+    TicketModule,
     FeatureWorkspacesModule,
     UiModule,
     RouterModule.forRoot(
@@ -80,6 +86,10 @@ export function initApollo(
           path: '',
           children: workspaceRoutes,
           canActivateChild: [CancelCommandGuard]
+        },
+        {
+          path: 'support',
+          component: SupportComponent
         }
       ],
       { paramsInheritanceStrategy: 'always' }

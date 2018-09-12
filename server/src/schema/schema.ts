@@ -52,6 +52,9 @@ export const typeDefs = gql`
   }
 
   type Database {
+    getTickets: [Ticket]
+    getTicket(id: Int!): Ticket
+    getTicketComments(id: Int!): [TicketComment]
     schematicCollections: [SchematicCollectionForNgNew]
     workspace(path: String!): Workspace!
     editors: [EditorSupport]
@@ -97,6 +100,9 @@ export const typeDefs = gql`
   }
 
   type Mutation {
+    addTicket(subject: String!, question: String!): TicketCreated
+    addComment(comment: String!, ticketId: Int!): CommentCreated
+    markTicketAsSolved(ticketId: Int): TicketSolved
     ngAdd(path: String!, name: String!): CommandStarted
     ngNew(path: String!, name: String!, collection: String!): CommandStarted
     generate(
@@ -171,5 +177,31 @@ export const typeDefs = gql`
     npmScripts(name: String): [NpmScript]
     projects(name: String): [Project]
     completions: CompletionsTypes
+  }
+
+  type Ticket {
+    subject: String!
+    question: String!
+    id: Int!
+    status: String!
+  }
+
+  type TicketCreated {
+    ticketId: Int!
+    status: String!
+  }
+
+  type CommentCreated {
+    msg: String!
+  }
+
+  type TicketSolved {
+    msg: String!
+  }
+
+  type TicketComment {
+    text: String!
+    author: String!
+    date: String!
   }
 `;

@@ -14,6 +14,7 @@
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
             "outputPath": "dist/apps/angular-console",
+            "preserveSymlinks": true,
             "index": "apps/angular-console/src/index.html",
             "main": "apps/angular-console/src/main.ts",
             "polyfills": "apps/angular-console/src/polyfills.ts",

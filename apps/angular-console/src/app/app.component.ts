@@ -86,6 +86,11 @@ export class AppComponent implements OnInit {
                 icon: 'folder_open',
                 name: 'Import',
                 routerLink: '/import-workspace'
+              },
+              {
+                icon: 'create',
+                name: 'Support',
+                routerLink: '/support'
               }
             ]
           });

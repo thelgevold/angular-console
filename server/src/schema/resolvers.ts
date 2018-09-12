@@ -1,5 +1,13 @@
 import * as path from 'path';
 import {
+  getAddTicketMutation,
+  getAddCommentMutation,
+  markTicketAsSolvedMutation,
+  ticketQuery,
+  ticketsQuery,
+  commentsQuery
+} from '@nrwl/angular-console-enterprise-electron';
+import {
   directoryExists,
   filterByName,
   findClosestNg,
@@ -111,6 +119,31 @@ const CompletionsTypes = {
 };
 
 const Database = {
+  async getTickets() {
+    try {
+      return await ticketsQuery().resolve();
+    } catch (e) {
+      throw new Error(
+        `Error when getting ticket list. Message: "${e.message}"`
+      );
+    }
+  },
+  async getTicket(_root, args: any) {
+    try {
+      return await ticketQuery().resolve(args.id);
+    } catch (e) {
+      throw new Error(`Error when getting ticket. Message: "${e.message}"`);
+    }
+  },
+  async getTicketComments(_root, args: any) {
+    try {
+      return await commentsQuery().resolve(args.id);
+    } catch (e) {
+      throw new Error(
+        `Error when getting comment list. Message: "${e.message}"`
+      );
+    }
+  },
   schematicCollections() {
     try {
       return schematicCollectionsForNgNew();
@@ -200,6 +233,34 @@ const Database = {
 };
 
 const Mutation = {
+  async addTicket(_root: any, args: any) {
+    try {
+      const ticket = await getAddTicketMutation().resolve(args);
+      return ticket;
+    } catch (e) {
+      console.log(e);
+      throw new Error(`Error when adding ticket. Message: "${e.message}"`);
+    }
+  },
+  async markTicketAsSolved(_root: any, args: any) {
+    try {
+      await markTicketAsSolvedMutation().resolve(args);
+      return { msg: 'Ticket Solved' };
+    } catch (e) {
+      console.log(e);
+      throw new Error(
+        `Error when marking ticket as solved. Message: "${e.message}"`
+      );
+    }
+  },
+  async addComment(_root: any, args: any) {
+    try {
+      return await getAddCommentMutation().resolve(args);
+    } catch (e) {
+      console.log(e);
+      throw new Error(`Error when adding comment. Message: "${e.message}"`);
+    }
+  },
   async ngAdd(_root: any, args: any) {
     try {
       return runCommand(args.path, findClosestNg(args.path), [
